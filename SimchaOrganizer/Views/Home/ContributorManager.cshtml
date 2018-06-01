@@ -1,0 +1,67 @@
+﻿@using SimchaOrganizer.Data
+@using SimchaOrganizer.Models
+
+@model ContributorManagerVM
+
+<h1 style="color: navy;">Contributions for @Model.Simcha</h1>
+<div>
+    <form method="post" action="/home/UpdateSimcha">
+        <table class="table table-bordered">
+            <tr>
+                <th>Contribute</th>
+                <th>Name</th>
+                <th>Balance</th>
+                <th>Always Include</th>
+                <th>Amount</th>
+            </tr>
+            @{int x = 0;}
+            @foreach (Contributor cad in Model.AllPeople)
+            {
+               <tr>
+                    @{Contributor c = Model.PplForSimcha.FirstOrDefault(p => p.ID == cad.ID);}
+                    <td>
+                        <input type="hidden" name="person[@x].ContributorID" value="@cad.ID" />
+                        <input type="hidden" name="person[@x].SimchaID" value="@Model.ID" />
+                        @if (c != null || cad.Include)
+                        {
+                            <input type="checkbox" value="true" name="person[@x].DidContribute" checked />
+                            <input type="hidden" value="false" name="person[@x].DidContribute" />
+                        }
+                        else
+                        {
+                            <input type="checkbox" value="true" name="person[@x].DidContribute" />
+                            <input type="hidden" value="false" name="person[@x].DidContribute" />
+                        }
+
+                    </td>
+                    <td>@cad.Name</td>
+                    <td>@cad.TotalLeft.ToString("C")</td>
+                    <td>
+                        @if (cad.Include)
+                        {
+                            <span style="font-size:20px;" class="glyphicon glyphicon-ok-sign"></span>
+                        }
+                        
+                    </td>
+                    <td>
+                        @if (c != null)
+                        {
+                            { c.TotalLeft = c.TotalLeft * -1; }
+                            <input type="text" placeholder="Amount" value= "@c.TotalLeft" name="person[@x].Amount"/>
+                        }
+                        else
+                        {
+                            <input type="text" placeholder="Amount" value="5" name="person[@x].Amount"/>
+                        }
+
+                    </td>
+                   
+                   @{x++;}
+                    
+                </tr>
+              
+            }
+        </table>
+        <button class="btn btn-danger">Update</button>
+    </form>
+</div>

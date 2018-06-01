@@ -1,0 +1,9 @@
+﻿@using SimchaOrganizer.Data
+@using SimchaOrganizer.Models
+
+@model ContributorListVM
+
+@foreach(Contributor c in Model.CList)
+{
+    <h3>@c.Name</h3>
+}

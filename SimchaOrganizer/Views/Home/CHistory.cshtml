@@ -1,0 +1,26 @@
+﻿@using SimchaOrganizer.Data
+@using SimchaOrganizer.Models
+
+@model PersonHistoryVM
+<div class="header">
+    <h2>History for @Model.Name</h2>
+    <h4>Current Balance: @Model.Amount.ToString("C")</h4>
+</div>
+
+<table class="table-striped table table-bordered">
+    <tr>
+        <th style="vertical-align: middle;">Action</th>
+        <th style="vertical-align: middle;">Amount</th>
+        <th style="vertical-align: middle;">Date</th>
+        
+    </tr>
+    @foreach (History activity in Model.ActionList.OrderByDescending(d=>d.Date))
+    {
+        <tr>
+            <td>@activity.Action</td>
+            <td>@activity.Amount.ToString("C")</td>
+            <td>@activity.Date.ToLongDateString()</td>
+      </tr>
+    }
+
+</table>
